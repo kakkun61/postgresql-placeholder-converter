@@ -1,0 +1,36 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ghc: ['8.10', '8.8', '8.6']
+        experimental: [false]
+        include:
+          - ghc: latest
+            experimental: true
+    continue-on-error: ${{ matrix.experimental }}
+    name: GHC ${{ matrix.ghc }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+        with:
+          ghc-version: ${{ matrix.ghc }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cabal/packages
+          key: packages-${{ matrix.ghc }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cabal/store
+          key: store-${{ matrix.ghc }}
+      - uses: actions/cache@v1
+        with:
+          path: dist-newstyle
+          key: dist-newstyle-${{ matrix.ghc }}
+      - run: cabal v2-build --only-dependencies
+      - run: cabal v2-build
+      - run: cabal v2-test
