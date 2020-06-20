@@ -16,7 +16,6 @@ import           Data.ByteString                  (ByteString)
 import qualified Data.ByteString                  as BS
 import qualified Data.ByteString.UTF8             as BSU
 
--- | Convert question mark style to dollar sign style of PostgreSQL SQL.
 convert :: ByteString-> Either String ByteString
 convert q =
   flip AP.parseOnly q $
