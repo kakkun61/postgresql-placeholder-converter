@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Database.PostgreSQL.Placeholder.Convert.QuestionToDollar
@@ -16,6 +17,10 @@ import           Data.ByteString                  (ByteString)
 import qualified Data.ByteString                  as BS
 import qualified Data.ByteString.UTF8             as BSU
 import qualified Data.Either.Result               as R
+
+#if !MIN_VERSION_base(4,13,0)
+import           Control.Monad.Fail               (MonadFail)
+#endif
 
 convert :: MonadFail m => ByteString -> m ByteString
 convert q =
