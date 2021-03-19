@@ -1,7 +1,7 @@
 cabal-version:       2.2
 
 name:                postgresql-placeholder-converter
-version:             0.1.0.0
+version:             0.2.0.0
 author:              Kazuki Okamoto
 copyright:           2020 Kazuki Okamoto, 2019 IIJ Innovation Institute Inc.
 license:             BSD-3-Clause

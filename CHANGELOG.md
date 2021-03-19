@@ -1,6 +1,6 @@
 # Revision history
 
-## Unreleased
+## 0.2.0.0 -- 2021-03-19
 
 - Use `MonadFail` as interface.
 
