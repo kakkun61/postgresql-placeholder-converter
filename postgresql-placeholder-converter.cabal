@@ -29,6 +29,7 @@ library
   other-modules:       Database.PostgreSQL.Placeholder.Convert.QuestionToDollar
   build-depends:       attoparsec,
                        bytestring,
+                       either-result,
                        mtl,
                        utf8-string
   ghc-options:         -Wall

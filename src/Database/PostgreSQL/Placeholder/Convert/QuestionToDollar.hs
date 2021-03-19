@@ -15,26 +15,28 @@ import qualified Data.Attoparsec.Internal.Types   as API
 import           Data.ByteString                  (ByteString)
 import qualified Data.ByteString                  as BS
 import qualified Data.ByteString.UTF8             as BSU
+import qualified Data.Either.Result               as R
 
-convert :: ByteString-> Either String ByteString
+convert :: MonadFail m => ByteString -> m ByteString
 convert q =
-  flip AP.parseOnly q $
-    flip evalStateT 1 $
-      (mconcat <$>) $ do
-        ss <-
-          AP.many' $
-            AP.choice
-              [ question
-              , lift questionLiteral
-              , lift singleQuoteLiteral
-              , lift doubleQuoteLiteral
-              , lift dollarQuoteLiteral
-              , lift lineComment
-              , lift blockComment
-              , lift $ BS.pack . (:[]) <$> AP.anyWord8
-              ]
-        lift AP.endOfInput
-        pure ss
+  R.toMonadFail $ R.fromEither $
+    flip AP.parseOnly q $
+      flip evalStateT 1 $
+        (mconcat <$>) $ do
+          ss <-
+            AP.many' $
+              AP.choice
+                [ question
+                , lift questionLiteral
+                , lift singleQuoteLiteral
+                , lift doubleQuoteLiteral
+                , lift dollarQuoteLiteral
+                , lift lineComment
+                , lift blockComment
+                , lift $ BS.pack . (:[]) <$> AP.anyWord8
+                ]
+          lift AP.endOfInput
+          pure ss
 
 singleQuoteLiteral :: AP.Parser BS.ByteString
 singleQuoteLiteral = oneCharQuoteLiteral '\'' <?> "singleQuoteLiteral"
