@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ghc: ['8.10', '8.8', '8.6']
+        ghc: ['9.0', '8.10', '8.8', '8.6']
         experimental: [false]
         include:
           - ghc: latest
